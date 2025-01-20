@@ -117,6 +117,8 @@ module.exports = async (env, options) => {
       hot: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
+        "X-Frame-Options": "allowall",
+        "Content-Security-Policy": "frame-ancestors *;",
       },
       server: {
         type: "https",
