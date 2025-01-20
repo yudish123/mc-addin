@@ -1,0 +1,72 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License. -->
+<!-- This file shows how to design a first-run page that provides a welcome screen to the user about the features of the add-in. -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mindcase Task Pane</title>
+    <!-- <script src="https://js.sentry-cdn.com/04da0f97872405bf9075ab4688986c56.min.js" crossorigin="anonymous"></script> -->
+    <!-- <script>
+      Sentry.init({
+        dsn: "https://04da0f97872405bf9075ab4688986c56@o4508500438941696.ingest.us.sentry.io/4508500494647296",
+
+        // Alternatively, use `process.env.npm_package_version` for a dynamic release version
+        // if your build tool supports it.
+        release: "my-project-name@2.3.12",
+        integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+
+        // Set tracesSampleRate to 1.0 to capture 100%
+        // of transactions for tracing.
+        // We recommend adjusting this value in production
+        // Learn more at
+        // https://docs.sentry.io/platforms/javascript/configuration/options/#traces-sample-rate
+        tracesSampleRate: 1.0,
+        // Set `tracePropagationTargets` to control for which URLs trace propagation should be enabled
+        tracePropagationTargets: ["localhost", /^https:\/\/mc-react-app/],
+
+        // Capture Replay for 10% of all sessions,
+        // plus for 100% of sessions with an error
+        // Learn more at
+        // https://docs.sentry.io/platforms/javascript/session-replay/configuration/#general-integration-configuration
+        replaysSessionSampleRate: 0.1,
+        replaysOnErrorSampleRate: 1.0,
+      });
+    </script> -->
+    <!-- Office JavaScript API -->
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Cache them and restore them
+      window._historyCache = {
+        replaceState: window.history.replaceState,
+        pushState: window.history.pushState,
+      };
+    </script>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Restore them
+      window.history.replaceState = window._historyCache.replaceState;
+      window.history.pushState = window._historyCache.pushState;
+    </script>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Template styles -->
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body class="ms-font-m ms-welcome ms-Fabric ms-bgColor-neutralLighter">
+    <div id="container"></div>
+  </body>
+</html>

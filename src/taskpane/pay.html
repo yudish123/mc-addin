@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Office JavaScript API -->
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Cache them and restore them
+      window._historyCache = {
+        replaceState: window.history.replaceState,
+        pushState: window.history.pushState,
+      };
+    </script>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Restore them
+      window.history.replaceState = window._historyCache.replaceState;
+      window.history.pushState = window._historyCache.pushState;
+    </script>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Template styles -->
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      const isSubscription = urlParams.get("isSubscription") === "true";
+      const key = urlParams.get("key");
+      const credits = urlParams.get("credits");
+      const email = urlParams.get("email");
+      console.log(id, isSubscription, key, credits, email);
+      //       {
+      //     “razorpay_payment_id”: “pay_00000000000001”,
+      //     “razorpay_subscription_id”: “sub_00000000000001”,
+      //     “razorpay_signature”:            “c04ff297db507f08ab701ea9aa36a1dc90679c2a8c80cb2ea7995e119f3f0c5e”
+      // }
+
+      var options = {
+        key,
+        name: email,
+        description: isSubscription ? "Start subscription on mindcase" : "Buy credits on mindcase",
+        handler: function (response) {
+          console.log(response);
+          Office.context.ui.messageParent(JSON.stringify({ action: "SUCCESS", response }));
+        },
+        theme: {
+          color: "#4EAEA3",
+        },
+      };
+
+      if (isSubscription) {
+        console.log("Subscription payment");
+        options.subscription_id = id;
+      } else {
+        console.log("Not a subscription payment");
+        //1 dollar 100 credits
+        const amount = Math.round(credits * 0.8 * 100).toString();
+        options.amount = amount;
+        options.currency = "INR";
+      }
+
+      var paymentObject = new Razorpay(options);
+      paymentObject.open();
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>

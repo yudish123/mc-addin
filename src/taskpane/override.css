@@ -1,0 +1,45 @@
+.r1oeeo9n::after {
+  display: none !important;
+}
+
+.f1xhbsuh::after {
+  display: none !important;
+}
+
+.fui-Switch__indicator {
+  margin: 0px !important;
+}
+
+.ftuwxu6 {
+  outline: none !important;
+  border: none !important;
+  border: 0.5px ridge gray !important;
+}
+
+#annual-tab {
+  padding-block: 8px !important;
+}
+
+#annual-tab span {
+  line-height: 14px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+#file-checkbox .fui-Checkbox__indicator {
+  margin-block: 0px;
+}
+
+#cache .rsji9ng:enabled:checked ~ .fui-Switch__indicator {
+  background-color: #33c481 !important;
+}

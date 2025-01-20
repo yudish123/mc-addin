@@ -1,0 +1,53 @@
+# Global options
+{
+    admin off                       # Disable the admin API
+    persist_config off              # Disable persistent configuration
+    auto_https off                  # Disable automatic HTTPS (handled by Railway)
+    
+    log {                           
+        format json
+    }
+
+    servers {
+        trusted_proxies static private_ranges 100.0.0.0/8 # Trust Railway's proxy
+    }
+}
+
+# Site block, listens on the Railway-assigned $PORT environment variable
+:{$PORT:3000} {
+    log {
+        format json
+    }
+
+    rewrite /health /*
+
+    # Serve static files from the 'dist' folder
+    root * dist
+    encode gzip
+    file_server
+
+    # Allow iframe embedding from any domain
+    header {
+        -X-Frame-Options
+        Content-Security-Policy "frame-ancestors *;"
+        Referrer-Policy "no-referrer-when-downgrade"
+        Access-Control-Allow-Origin "*"
+        Access-Control-Allow-Methods "GET, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+    }
+
+    # Handle CORS for specific paths
+    @functionsJson path /functions.json
+    header @functionsJson Access-Control-Allow-Origin "*"
+    header @functionsJson Access-Control-Allow-Methods "GET, OPTIONS"
+    header @functionsJson Access-Control-Allow-Headers "Content-Type, Authorization"
+
+    # Optional: Apply CORS to all .json files (not just /functions.json)
+    @jsonFiles path *.json
+    header @jsonFiles Access-Control-Allow-Origin "*"
+    header @jsonFiles Access-Control-Allow-Methods "GET, OPTIONS"
+    header @jsonFiles Access-Control-Allow-Headers "Content-Type, Authorization"
+
+    # Enable client-side routing: Redirect non-existent paths to 'index.html'
+    try_files {path} /index.html
+}

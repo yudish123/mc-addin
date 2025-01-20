@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Office JavaScript API -->
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Cache them and restore them
+      window._historyCache = {
+        replaceState: window.history.replaceState,
+        pushState: window.history.pushState,
+      };
+    </script>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+
+    <script type="text/javascript">
+      // Office js deletes window.history.pushState and window.history.replaceState. Restore them
+      window.history.replaceState = window._historyCache.replaceState;
+      window.history.pushState = window._historyCache.pushState;
+    </script>
+
+    <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Template styles -->
+    <link href="taskpane.css" rel="stylesheet" type="text/css" />
+    <script>
+      const url = new URL(window.location.href);
+      console.log(url);
+      const subscriptionId = url.searchParams.get("subscription_id");
+
+      //   console.log(subscriptionId);
+
+      if (!subscriptionId) {
+        const xpay_intent_id = url.searchParams.get("xpay_intent_id");
+        if (!xpay_intent_id) {
+          Office.context.ui.messageParent(JSON.stringify({ action: "FAILURE", err: "No subscription_id found" }));
+        } else {
+          Office.context.ui.messageParent(JSON.stringify({ action: "SUCCESS", data: { xpay_intent_id } }));
+        }
+      } else {
+        fetch(`https://mc-payments-staging.up.railway.app/xpay/verify/${subscriptionId}/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            Office.context.ui.messageParent(JSON.stringify({ action: "SUCCESS", data }));
+          })
+          .catch((err) => {
+            console.error("Fetch error:", err);
+            Office.context.ui.messageParent(JSON.stringify({ action: "FAILURE", err }));
+          });
+      }
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+</html>
