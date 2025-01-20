@@ -1,10 +1,4 @@
 {
-    "builds": [
-      {
-        "src": "dist/**",
-        "use": "@vercel/static"
-      }
-    ],
     "headers": [
       {
         "source": "/:path*",
@@ -29,13 +23,6 @@
       }
     ],
     "outputDirectory": "dist",
-    "build": {
-      "env": {
-        "ENV": "production"
-      },
-      "commands": [
-        "npm run build:env && npm run build"
-      ]
-    }
+    "buildCommand": "npm run build:env && npm run build"
   }
   
